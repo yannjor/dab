@@ -1,13 +1,10 @@
 import http from "k6/http";
 
-import { sleep } from "k6";
-
 export const options = {
+  duration: "1s",
   vus: 10,
-  duration: "10",
 };
 
 export default function () {
-  http.get("http://localhost:3000");
-  sleep(1);
+  http.post("http://localhost:3000/api/urls", { url: "http://test.com" });
 }
