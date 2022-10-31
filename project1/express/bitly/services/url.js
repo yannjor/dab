@@ -20,7 +20,12 @@ const getOriginal = async (shortened) => {
     "SELECT original FROM urls WHERE shortened = $1;",
     [shortened]
   );
-  return rows[0].original;
+  if (rows.length) {
+    const res = rows[0];
+    if (res.original) {
+      return res.original;
+    }
+  }
 };
 
 module.exports = { create, getAll, getOriginal };

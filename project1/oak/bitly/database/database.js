@@ -1,12 +1,13 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
+
+const pool = new Pool();
 
 const executeQuery = async (query, params) => {
   const response = {};
   let client;
 
   try {
-    const client = new Client();
-    client.connect();
+    client = await pool.connect();
     const result = await client.query(query, params);
     if (result.rows) {
       response.rows = result.rows;
@@ -17,7 +18,7 @@ const executeQuery = async (query, params) => {
   } finally {
     if (client) {
       try {
-        await client.end();
+        client.release();
       } catch (e) {
         console.log("Unable to release database connection.");
         console.log(e);

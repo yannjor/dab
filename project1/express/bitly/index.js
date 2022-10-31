@@ -17,6 +17,12 @@ app.get("/", (request, response) => {
   response.send(html);
 });
 
+app.get("/random", async (request, response) => {
+  const urls = await getAll();
+  const random = urls[Math.floor(Math.random() * urls.length)];
+  response.redirect(random.original);
+});
+
 app.get("/:id", async (request, response) => {
   const original = await getOriginal(request.params.id);
   response.redirect(original);
@@ -25,12 +31,6 @@ app.get("/:id", async (request, response) => {
 app.get("/api/urls", async (request, response) => {
   const urls = await getAll();
   response.json(urls);
-});
-
-app.get("/random", async (request, response) => {
-  const urls = await getAll();
-  const random = urls[Math.floor(Math.random() * urls.length)];
-  response.redirect(random.original);
 });
 
 app.post("/api/urls", async (request, response) => {
