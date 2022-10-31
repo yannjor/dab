@@ -23,6 +23,11 @@ router
     const urls = await getAll();
     context.response.body = urls;
   })
+  .get("/random", async (context) => {
+    const urls = await getAll();
+    const random = urls[Math.floor(Math.random() * urls.length)];
+    context.response.redirect(random.original);
+  })
   .post("/api/urls", async ({ request, response }) => {
     const body = request.body();
     const params = await body.value;

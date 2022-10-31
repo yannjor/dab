@@ -27,6 +27,12 @@ app.get("/api/urls", async (request, response) => {
   response.json(urls);
 });
 
+app.get("/random", async (request, response) => {
+  const urls = await getAll();
+  const random = urls[Math.floor(Math.random() * urls.length)];
+  response.redirect(random.original);
+});
+
 app.post("/api/urls", async (request, response) => {
   const original = request.body.url;
   const shortened = await create(original);
