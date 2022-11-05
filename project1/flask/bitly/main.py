@@ -50,12 +50,11 @@ def urls():
         return jsonify(urls)
 
 
-# TODO: fix
 @app.route("/random")
 def get_random():
     conn, cur = connect_db()
     cur.execute("SELECT * FROM urls;")
-    urls = [t[0] for t in cur.fetchall()]
+    urls = [t[1] for t in cur.fetchall()]
     cur.close()
     conn.close()
     return redirect(choice(urls))
@@ -73,4 +72,4 @@ def get_original(shortened):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=3000)
