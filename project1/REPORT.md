@@ -58,6 +58,35 @@ To run the performance test for the main page.
 
 We see that the Node.js + Express version of the application performs the best
 in all categories, followed by Node.js + Oak version, and the Python + Flask
-version coming in as a distant third.
+version coming in as a distant third. The performance differences between the
+different sites are not so surprising, with the form submission being the
+slowest and main page the fastest. The differences between the express and oak
+version may be due to the fact that oak is primarily a middleware framework for
+Deno, with Node.js support only added later. Oak is also less mature than
+Express.
 
-WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+The reason for Flask's slowness on the other hand is rather surprising. One
+reason may be that the server was run as a development server, not made for
+production deployment. For production, Flask recommends to use a WSGI server
+instead, such as gunicorn. The code used to communicate with the database may
+also not be the most efficient, and may slow down operations by connecting and
+closing a connection each time it executes a query.
+
+
+## Improving performance
+
+For the Flask application, improvements could likely be made by switching to use
+a production WSGI server instead of a development server. In addition, the code
+that communicates with the database could probably be made faster. This is also
+probably true for the Express and Oak versions, as I do not have that much
+experience with writing this type of code.
+
+The `/random` route is pretty slow and scales poorly with the size of the
+database, because it fetches all entries and picks a random one. This could be
+improved for example by generating a random id within the range of possible id's
+and requesting only the entry with that id.
+
+Other than this, using some other database than Postgres may also yield better
+results, or could at least be an area to explore more if performance were the
+most critical aspect. Database operations could also be improved by using an
+intermediate cache instead of writing and reading directly from the disk.
