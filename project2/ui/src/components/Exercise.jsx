@@ -1,7 +1,8 @@
 const Exercise = ({ exercise }) => {
   return (
     <div>
-      <h2>{exercise.question}</h2>
+      <h2>{exercise.name}</h2>
+      <p>{exercise.description}</p>
       Write your solution here:
       <form
         onSubmit={(event) => {
