@@ -24,3 +24,8 @@
 
 ## Which principles from microservices are also present in micro-frontends?
 
+- [x] Allowing individual teams to make technological decisions instead of these
+  being done in a centralized manner.
+- [x] Strong focus on automating integration and deployment through CI/CD
+  pipelines.
+- [x] Abstracting information related to the implementation of the subprograms.
