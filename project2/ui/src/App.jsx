@@ -1,23 +1,17 @@
 import { Routes, Route, useMatch } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import Exercise from "./components/Exercise";
 import Exercises from "./components/Exercises";
 
+import exerciseService from "./services/exercises";
+
 const App = () => {
-  const exercises = [
-    {
-      id: 1,
-      name: "Sum of three values",
-      description:
-        "Write a function int sum(int first, int second, int third) that returns the sum of the given integers. As an example, the function call sum(1, 2, 3) should return the value 6.",
-    },
-    {
-      id: 2,
-      name: "Sum with formula",
-      description:
-        "Write a function String sumWithFormula(int first, int second) that returns the written out sum of the given integers and the sum. As an example, the function call sumWithFormula(1, 2) should return the string 1+2=3 and the function call sumWithFormula(1, 1) should return the string 1+1=2. Note! Do not add spaces to the returned string.",
-    },
-  ];
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    exerciseService.getAll().then((exercises) => setExercises(exercises));
+  }, []);
 
   const match = useMatch("/:id");
   const exercise = match
