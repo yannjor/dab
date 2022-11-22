@@ -17,4 +17,13 @@ const getById = async (id) => {
   }
 };
 
-module.exports = { getAll, getById };
+const getUserCompleted = async (user_id) => {
+  const result = await executeQuery(
+    "SELECT exercise_id FROM submissions WHERE user_id = $1;",
+    [user_id]
+  );
+  return [...new Set(result.rows.map(r => r.exercise_id))];
+};
+
+const exerciseService = { getAll, getById, getUserCompleted };
+module.exports = exerciseService;

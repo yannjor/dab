@@ -6,27 +6,24 @@ import Exercise from "./components/Exercise";
 import Exercises from "./components/Exercises";
 
 import exerciseService from "./services/exercises";
-import submissionService from "./services/submissions";
 
 const App = () => {
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState({ all: [], completed: [] });
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("exerciseUser")) {
+      const userToken = nanoid(16);
+      window.localStorage.setItem("exerciseUser", JSON.stringify(userToken));
+    }
+  }, []);
 
   useEffect(() => {
     exerciseService.getAll().then((exercises) => setExercises(exercises));
   }, []);
 
-  useEffect(() => {
-    let userToken = window.localStorage.getItem("exerciseUser");
-    if (!userToken) {
-      userToken = nanoid(16);
-      window.localStorage.setItem("exerciseUser", JSON.stringify(userToken));
-    }
-    submissionService.setToken(userToken);
-  }, []);
-
   const match = useMatch("/:id");
   const exercise = match
-    ? exercises.find((ex) => ex.id === Number(match.params.id))
+    ? exercises.all.find((ex) => ex.id === Number(match.params.id))
     : null;
 
   return (

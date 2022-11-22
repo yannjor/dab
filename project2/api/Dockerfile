@@ -1,4 +1,6 @@
-FROM node:19
+FROM node:19-alpine
+
+RUN apk add --update docker openrc
 
 WORKDIR /app
 
