@@ -5,4 +5,16 @@ const getAll = async () => {
   return result.rows;
 };
 
-module.exports = { getAll };
+const getById = async (id) => {
+  const { rows } = await executeQuery(
+    "SELECT * FROM exercises WHERE id = $1;",
+    [id]
+  );
+  if (rows.length) {
+    return rows[0];
+  } else {
+    return { error: `Exercise with id ${id} not found` };
+  }
+};
+
+module.exports = { getAll, getById };
