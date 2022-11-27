@@ -6,7 +6,7 @@ const { Kafka } = require("kafkajs");
 
 const exerciseService = require("./services/exercises");
 const submissionService = require("./services/submissions");
-const { grade } = require("./services/grader");
+const { grade, buildGraderImage } = require("./services/grader");
 const { tokenExtractor } = require("./utils/middleware");
 
 const port = 3001;
@@ -33,13 +33,15 @@ consumer
 consumer
   .run({
     eachMessage: async ({ topic, partition, message }) => {
-      const [user_id, code, exercise_id] = message.value;
+      const { user_id, code, exercise_id } = JSON.parse(message.value);
       const gradingResult = await grade(code);
       const passed = gradingResult === "PASS";
       await submissionService.create(user_id, exercise_id, passed);
     },
   })
   .then(() => console.log("Consumer running"));
+
+buildGraderImage().then(() => console.log("Built grader image"));
 
 app.get("/api/exercises", async (request, response) => {
   const all = await exerciseService.getAll();
@@ -64,7 +66,10 @@ app.post("/api/submissions", async (request, response) => {
   await producer.send({
     topic: "submissions",
     messages: [
-      { key: "submission", value: Buffer.from([user_id, code, exercise_id]) },
+      {
+        key: "submission",
+        value: JSON.stringify({ user_id, exercise_id, code }),
+      },
     ],
   });
   response.send("Your submission is being graded...");

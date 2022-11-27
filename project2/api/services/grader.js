@@ -6,6 +6,10 @@ const run = async (cmdList) => {
   await exec(cmdList.join(" "));
 };
 
+const buildGraderImage = async () => {
+  await run(["docker", "build", "grader-image", "-t", "grader-image"]);
+};
+
 const createGradingContainer = async (code, randomKey) => {
   const randomFileName = `submission-${randomKey}.data`;
   await fsPromises.writeFile(randomFileName, code);
@@ -65,13 +69,12 @@ const runGradingContainer = async (graderContainerName, randomKey) => {
 };
 
 const grade = async (code) => {
-  // const randomKey = Math.floor(Math.random() * 900000000 + 100000000);
-  //
-  // const graderContainerName = await createGradingContainer(code, randomKey);
-  // const result = await runGradingContainer(graderContainerName, randomKey);
-  //
-  // return result;
-  return "PASS";
+  const randomKey = Math.floor(Math.random() * 900000000 + 100000000);
+
+  const graderContainerName = await createGradingContainer(code, randomKey);
+  const result = await runGradingContainer(graderContainerName, randomKey);
+
+  return result;
 };
 
-module.exports = { grade };
+module.exports = { grade, buildGraderImage };

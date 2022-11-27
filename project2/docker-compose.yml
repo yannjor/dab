@@ -27,6 +27,8 @@ services:
     build: api
     image: api
     restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 3001:3001
     depends_on:
