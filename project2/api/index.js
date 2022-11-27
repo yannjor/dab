@@ -11,6 +11,8 @@ const { tokenExtractor } = require("./utils/middleware");
 
 const port = 3001;
 
+let nSubmissions = 0;
+
 app.use(cors());
 app.use(express.json());
 app.use(tokenExtractor);
@@ -37,6 +39,7 @@ consumer
       const gradingResult = await grade(code);
       const passed = gradingResult === "PASS";
       await submissionService.create(user_id, exercise_id, passed);
+      nSubmissions += 1;
     },
   })
   .then(() => console.log("Consumer running"));
@@ -59,6 +62,17 @@ app.get("/api/submissions", async (request, response) => {
   response.json(submissions);
 });
 
+app.get("/api/submissionstatus/:id", async (request, response) => {
+  const submission = await submissionService.getById(request.params.id);
+  if (submission.length) {
+    const passed = submission[0].completed;
+    const res = passed ? "PASS" : "FAIL";
+    response.send(res);
+  } else {
+    response.send("GRADING");
+  }
+});
+
 app.post("/api/submissions", async (request, response) => {
   const { code, exercise_id } = request.body;
   const user_id = request.token;
@@ -72,7 +86,7 @@ app.post("/api/submissions", async (request, response) => {
       },
     ],
   });
-  response.send("Your submission is being graded...");
+  response.send((nSubmissions + 1).toString());
 });
 
 app.listen(port, () => {

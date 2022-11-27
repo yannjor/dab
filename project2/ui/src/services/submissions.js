@@ -15,6 +15,11 @@ const create = async (newObject) => {
   return response.data;
 };
 
-const submissionService = { getAll, create };
+const getStatus = async (id) => {
+  const request = axios.get(`/api/submissionstatus/${id}`);
+  return request.then((response) => response.data);
+};
+
+const submissionService = { getAll, create, getStatus };
 
 export default submissionService;

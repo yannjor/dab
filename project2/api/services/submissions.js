@@ -12,5 +12,13 @@ const getAll = async () => {
   return result.rows;
 };
 
-const submissionService = { create, getAll };
+const getById = async (id) => {
+  const { rows } = await executeQuery(
+    "SELECT * FROM submissions WHERE id = $1;",
+    [id]
+  );
+  return rows;
+};
+
+const submissionService = { create, getAll, getById };
 module.exports = submissionService;

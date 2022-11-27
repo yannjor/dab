@@ -6,6 +6,10 @@ const Exercise = ({ exercise }) => {
   const [code, setCode] = useState("");
   const [notification, setNotification] = useState(null);
 
+  const clearNotification = () => {
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   return (
     <div>
       {notification && (
@@ -17,16 +21,29 @@ const Exercise = ({ exercise }) => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          const response = await submissionService.create({
+          const submissionId = await submissionService.create({
             code: code,
             exercise_id: exercise.id,
           });
-          setNotification({ text: response});
-          setTimeout(() => setNotification(null), 5000);
+          setNotification({ text: "You submission is being graded..." });
+          clearNotification();
           setCode("");
+          const checkStatus = setInterval(async () => {
+            console.log("checking grading status");
+            const status = await submissionService.getStatus(submissionId);
+            console.log(status);
+            if (status !== "GRADING") {
+              setNotification({ text: status, error: status === "FAIL" });
+              clearNotification();
+              clearInterval(checkStatus);
+            }
+          }, 5000);
         }}
       >
-        <textarea onChange={({ target }) => setCode(target.value)} value={code}></textarea>
+        <textarea
+          onChange={({ target }) => setCode(target.value)}
+          value={code}
+        ></textarea>
         <button type="submit">Submit</button>
       </form>
     </div>
