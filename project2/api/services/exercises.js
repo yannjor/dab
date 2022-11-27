@@ -19,7 +19,7 @@ const getById = async (id) => {
 
 const getUserCompleted = async (user_id) => {
   const result = await executeQuery(
-    "SELECT exercise_id FROM submissions WHERE user_id = $1;",
+    "SELECT exercise_id FROM submissions WHERE user_id = $1 AND completed = true;",
     [user_id]
   );
   return [...new Set(result.rows.map(r => r.exercise_id))];

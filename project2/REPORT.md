@@ -1,8 +1,5 @@
 # Project 2 report
 
-Write the project report here. Do not include your personal
-details (e.g. name or student number).
-
 ## Running the application
 
 To run the application, simply run `docker-compose up`. This starts the
@@ -36,10 +33,24 @@ k6 run --summary-trend-stats "med,p(95),p(99)" k6/mainpage.js
 | Submissions | 1652       | 4.44ms          | 14.26ms      | 15.54ms      |
 
 ## Reflections
-<!-- ○ A brief reflection (5-10 sentences) on the present -->
-<!-- performance of the application. -->
+
+The application performs quite well right now. The main page, could be faster
+however if compared to the previous project. This is likely because the
+exercises are fetched from the database and rendered client-side. There is not
+that big a difference between the main page and posting to the submissions
+endpoint. The application is not very well optimized for SEO, since the
+exercises are rendered on the client with javascript. Currently, there is also
+no caching system in place, so submissions with the exact same code are
+unnecessarily being graded.
 
 ## Improving performance
 
-<!-- ○ A brief list of suggestions (5-10 sentences) for improving the -->
-<!-- performance of the application. -->
+Performance for the main page could likely be improved by rendering the
+exercise pages server side, or by having them be static html pages generated
+with for example Astro. The grading performance might be improved by using
+multiple consumers running concurrently. In addition, the grading performance
+could be improved by using a cache of submissions so as to avoid unnecessary
+grading. It may also be interesting to test some other message queuing system,
+for example RabbitMQ, to see how well it compares in this application compared
+to Kafka. The polling mechanism implemented in the UI could certainly be
+improved, for example by using server-sent events or websockets.
