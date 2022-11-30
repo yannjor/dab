@@ -1,1 +1,20 @@
-/* Create your schema here */
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    text TEXT,
+    user_id TEXT,
+    posted DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE replies (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT,
+    message_id INT,
+    posted DATE,
+    CONSTRAINT fk_exercise FOREIGN KEY(message_id) REFERENCES messages(id)
+);
+
+INSERT INTO messages(text, user_id)
+VALUES
+('Hello World!', 'admin'),
+('Hi Mom', 'admin'),
+('This is a test message', 'admin'),
