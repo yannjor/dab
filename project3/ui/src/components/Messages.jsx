@@ -20,6 +20,7 @@ const Messages = ({ messages, setMessages }) => {
           </li>
         ))}
       </ul>
+      <h3>Add message</h3>
       <form
         onSubmit={async (event) => {
           event.preventDefault();

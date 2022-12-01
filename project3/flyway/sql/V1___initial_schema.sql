@@ -7,6 +7,7 @@ CREATE TABLE messages (
 
 CREATE TABLE replies (
     id SERIAL PRIMARY KEY,
+    text TEXT,
     user_id TEXT,
     message_id INT,
     posted TIMESTAMPTZ DEFAULT Now(),

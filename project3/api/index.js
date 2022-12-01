@@ -20,6 +20,22 @@ app.get("/api/messages/:id", async (request, response) => {
   response.json(message);
 });
 
+app.get("/api/messages/:id/replies", async (request, response) => {
+  const replies = await messageService.getReplies(request.params.id);
+  response.json(replies);
+});
+
+app.post("/api/messages/:id/replies", async (request, response) => {
+  const { reply } = request.body;
+  const user_id = request.headers.authorization;
+  const newReply = await messageService.createReply(
+    request.params.id,
+    user_id,
+    reply
+  );
+  response.json(newReply);
+});
+
 app.post("/api/messages", async (request, response) => {
   const { text } = request.body;
   const user_id = request.headers.authorization;
