@@ -17,7 +17,7 @@ services:
     image: ui
     restart: "no"
     ports:
-      - 7778:7778
+      - 3000:3000
     depends_on:
       - api
     env_file:
@@ -28,7 +28,7 @@ services:
     image: api
     restart: "no"
     ports:
-      - 7777:7777
+      - 3001:3001
     depends_on:
       - database
       - flyway

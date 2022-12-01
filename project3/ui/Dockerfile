@@ -1,11 +1,13 @@
-FROM denoland/deno:alpine-1.26.2
-
-EXPOSE 7778
+FROM node:19
 
 WORKDIR /app
 
+COPY ["package.json", "package-lock.json*", "./"]
+
+RUN npm install
+
 COPY . .
 
-RUN deno cache deps.js
+EXPOSE 3000
 
-CMD [ "run", "--watch", "--allow-net", "--allow-read", "--allow-env", "--no-check", "app.js" ]
+CMD ["npm", "start"]

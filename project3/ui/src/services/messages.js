@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "/api/exercises";
+const baseUrl = "/api/messages";
 
 const getAll = () => {
   const request = axios.get(baseUrl);
