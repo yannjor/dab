@@ -20,6 +20,13 @@ app.get("/api/messages/:id", async (request, response) => {
   response.json(message);
 });
 
+app.post("/api/messages", async (request, response) => {
+  const { text } = request.body;
+  const user_id = request.headers.authorization;
+  const newMessage = await messageService.create(text, user_id);
+  response.json(newMessage);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

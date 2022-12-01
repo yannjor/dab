@@ -16,5 +16,13 @@ const getById = async (id) => {
   }
 };
 
-const messageService = { getAll, getById };
+const create = async (text, user_id) => {
+  const { rows } = await executeQuery(
+    "INSERT INTO messages(text, user_id) VALUES ($1, $2) RETURNING *;",
+    [text, user_id]
+  );
+  return rows[0];
+};
+
+const messageService = { getAll, getById, create };
 module.exports = messageService;
