@@ -18,4 +18,9 @@ INSERT INTO messages(text, user_id)
 VALUES
 ('Hello World!', 'admin'),
 ('Hi Mom', 'admin'),
-('This is a test message', 'admin')
+('This is a test message', 'admin');
+
+INSERT INTO replies(text, user_id, message_id)
+VALUES
+('Good one!', 'admin', 1),
+('Boring...', 'admin', 1);
