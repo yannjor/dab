@@ -1,6 +1,15 @@
 const { Pool } = require("pg");
 
-const pool = new Pool();
+let pool;
+
+if (process.env.PGPASS) {
+  const PGPASS = process.env.PGPASS.trim();
+  const PGPASS_PARTS = PGPASS.split(":");
+  const [host, port, database, username, password] = PGPASS_PARTS;
+  pool = new Pool({ host, user: username, password, database, port });
+} else {
+  pool = new Pool();
+}
 
 const executeQuery = async (query, params) => {
   const response = {};
