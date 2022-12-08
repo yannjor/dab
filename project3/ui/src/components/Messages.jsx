@@ -6,7 +6,7 @@ const Messages = ({ messages, setMessages }) => {
   const [message, setMessage] = useState("");
 
   const sortedMessages = messages
-    .sort((a, b) => a.posted - b.posted)
+    .sort((a, b) => b.posted - a.posted)
     .slice(0, 20);
 
   return (
